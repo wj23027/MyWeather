@@ -4,29 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    android:paddingRight="25dp"
-    android:paddingLeft="25dp"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
-
-
-    <EditText
-        android:id="@+id/pro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints="地区名称"
-        tools:ignore="LabelFor" />
+    android:orientation="vertical"
+    android:padding="20sp"
+    tools:context=".weatherItem">
 
     <TextView
+        android:id="@+id/area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:text="" />
+        android:text="@string/area"
+        android:textSize="20sp" />
 
-    <Spinner
-        android:id="@+id/spinner2"
+    <TextView
+        android:id="@+id/weather"
+        android:textSize="15sp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:text="@string/weather"
+        tools:ignore="RtlHardcoded" />
+
+    <TextView
+        android:id="@+id/areaHref"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="@string/areahref" />
+
 
 </LinearLayout>

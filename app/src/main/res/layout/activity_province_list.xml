@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp"
+    android:padding="5dp"
     tools:context=".provinceList">
 
     <TextView
         android:id="@+id/province"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="province"
         android:textSize="24sp" />
     <TextView
         android:id="@+id/proURL"

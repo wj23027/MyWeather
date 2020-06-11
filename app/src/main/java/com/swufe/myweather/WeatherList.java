@@ -2,7 +2,9 @@ package com.swufe.myweather;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -29,96 +32,148 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class WeatherList extends AppCompatActivity implements Runnable {
     ArrayAdapter<String> adapter;
     Spinner spinner;
+    TextView dateTom;
+    ListView listView;
     Handler handler;
-    String  hrefStr;
+    String  hrefStr = "http://www.weather.com.cn/textFC/beijing.shtml";
+
 
     String TAG = "WeatherList";
     List<HashMap<String, String>> proList;
+    List<HashMap<String, String>> weatherList = new ArrayList<HashMap<String, String>>();;
     private SimpleAdapter listItemAdapter;
+    private SimpleAdapter listItemAdapter2;
+    String todayStr;
+    String dateStr;
+    String tomorrow;
+    Boolean update;
+    SharedPreferences sp;
 
-    @SuppressLint("HandlerLeak")
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @SuppressLint({"HandlerLeak", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather_list);
+
         spinner = findViewById(R.id.provinceSpinner);
-        SharedPreferences sp = getSharedPreferences("mydata", Activity.MODE_PRIVATE);
+        dateTom = findViewById(R.id.todayDate);
+
+        listView = findViewById(R.id.tempListView);
         proList = new ArrayList<HashMap<String, String>>();
+        sp = getSharedPreferences("mydata", Activity.MODE_PRIVATE);
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        todayStr = sdf.format(Calendar.getInstance().getTime());
 
-        for(int i = 0;i<100;i++){
-            HashMap<String,String>  map = new HashMap<String,String>();
-            map.put("province","province"+i);
-            map.put("href","href"+i);
-            proList.add(map);        }
+//        Calendar tom =Calendar.getInstance();
+//        tom.add(Calendar.DATE,1);
+//        final String tomorrow = sdf.format(tom.getTime());
 
 
-        listItemAdapter= new SimpleAdapter(this, proList,//数据源
-                R.layout.activity_province_list,//布局实现
-                new String[] {"province","href"},
-                new int[]{R.id.province,R.id.proURL}
-        );
-        spinner.setAdapter(listItemAdapter);
 
-        Log.i(TAG, "onCreate:开启子线程");
 //        Thread t = new Thread(this);
 //        t.start();
         handler = new Handler(){//用于获取其他线程中的消息
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void handleMessage(@NonNull Message msg) {//获得数据队列
                 super.handleMessage(msg);
+                if(msg.what == 3){
+                    tomorrow = (String) msg.obj;
+                    Log.i(TAG,"onCreate:handler3:获得天气日期:"+tomorrow);
+//                    dateTom.setText(tomorrow);
+                }
                 if(msg.what == 1){//判断数据是哪个线程返回的
                     proList = (List<HashMap<String, String>>)msg.obj;
-                    Log.i(TAG,"onCreate:handler:获得数据队列中的list数据");
+                    Log.i(TAG,"onCreate:handler1:主线程获得省份数据");
+//                    listItemAdapter= new SimpleAdapter(WeatherList.this, proList,//数据源
+//                            R.layout.activity_province_list,//布局实现
+//                            new String[] {"province","href"},
+//                            new int[]{R.id.province,R.id.proURL}
+//                    );
+//                    spinner.setAdapter(listItemAdapter);
+//                    Log.i(TAG,"onCreate:展示省份列表");
+
+
+
                     //保存list数据及更新日期
-                    SharedPreferences sp = getSharedPreferences("mydata", Activity.MODE_PRIVATE);
                     Gson gson = new Gson();
                     String json = gson.toJson(proList);
                     SharedPreferences.Editor editor = sp.edit();
+                    editor.putString("date",todayStr);
                     editor.putString("data",json);
+                    editor.putString("tomorrow",tomorrow);
+
                     editor.apply();
-                    Log.i(TAG, "onCreate:handler:将数据保存至sp");
+                    Log.i(TAG, "onCreate:handler1:sp保存省份及更新日期");
+                }
+                if(msg.what == 2){
+                    weatherList = (List<HashMap<String, String>>)msg.obj;
+                    Log.i(TAG,"onCreate:handler2:主线程获得天气数据");
+//                    for(HashMap<String,String> map:weatherList){
+//                        Log.i(TAG, "获得："+Objects.requireNonNull(map.get("area")));
+//                        //Log.i(TAG, Objects.requireNonNull(map.get("href")));
+//                    }
+                    listItemAdapter2= new SimpleAdapter(WeatherList.this, weatherList,//数据源
+                            R.layout.activity_weather_item,//布局实现
+                            new String[] {"area","weatherStr","href"},
+                            new int[]{R.id.area,R.id.weather,R.id.areaHref}
+                    );
+                    listView.setAdapter(listItemAdapter2);
+                    Log.i(TAG,"onCreate:展示天气列表");
+
                 }
 
-
             }
+
         };
 
-
-
         //获取sp保存的list数据至proList
-        String data = sp.getString("data", "");
-        Log.i(TAG, "data:"+data);
-        Log.i(TAG, "onCreate:获取sp中的数据");
 
+        dateStr = sp.getString("date", "");
+        update = !todayStr.equals(dateStr);
+        //Log.i(TAG, "onCreatedata:"+data);
+        Log.i(TAG, "onCreate:今日日期："+todayStr+"，上次更新日期："+dateStr+"，是否更新："+update);
+        tomorrow = sp.getString("tomorrow","");
+        dateTom.setText("明日天气  "+tomorrow);
+        Log.i(TAG, "onCreate:明天天气："+tomorrow);
+
+        Log.i(TAG, "onCreate:获取sp中省份数据...");
         Gson gson = new Gson();
         Type listType = new TypeToken<List<HashMap<String,String>>>() {
         }.getType();
+        String data = sp.getString("data", "");
         proList = gson.fromJson(data, listType);
-
         if(proList !=null){
-            Log.i(TAG, "proList！=null");
-//            for(HashMap<String,String> map:proList){
-//                //Log.i(TAG, Objects.requireNonNull(map.get("province")));
-//                //Log.i(TAG, Objects.requireNonNull(map.get("href")));//
-//            }
-            Log.i(TAG,"onCreate:SharedPreferences:已获取sp保存的list数据");
+            Log.i(TAG,"onCreate:已获取sp省份数据");
 
             //在布局中展示list数据
-            listItemAdapter= new SimpleAdapter(this, proList,//数据源
+            listItemAdapter= new SimpleAdapter(WeatherList.this, proList,//数据源
                     R.layout.activity_province_list,//布局实现
                     new String[] {"province","href"},
                     new int[]{R.id.province,R.id.proURL}
             );
             spinner.setAdapter(listItemAdapter);
-            Log.i(TAG,"onCreate:利用list数据重置listView");
+            Log.i(TAG,"onCreate:展示省份列表");
         }
+        //Log.i(TAG, "proList！=null");
+//            for(HashMap<String,String> map:proList){
+//                //Log.i(TAG, Objects.requireNonNull(map.get("province")));
+//                //Log.i(TAG, Objects.requireNonNull(map.get("href")));//
+//            }
+
+
 
         //选择省份
         spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
@@ -128,139 +183,151 @@ public class WeatherList extends AppCompatActivity implements Runnable {
                 TextView href= view.findViewById(R.id.proURL);
                 String provinceStr = String.valueOf(province.getText());
                 hrefStr = String.valueOf(href.getText());
-                Log.i(TAG,"onCreate:listView:onItemSelected:省份："+provinceStr);
-                Log.i(TAG,"onCreate:listView:onItemSelected:链接："+hrefStr);
+                Log.i(TAG,"onCreate:onItemSelected:点击省份："+provinceStr);
+                //Log.i(TAG,"onCreate:listView:onItemSelected:链接："+hrefStr);
+                Log.i(TAG,"onCreate:onItemSelected:开启子线程...");
                 Thread t = new Thread(WeatherList.this);
                 t.start();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView area= view.findViewById(R.id.area);
+                TextView href= view.findViewById(R.id.areaHref);
+                String hrefStr = String.valueOf(href.getText());
+                Log.i(TAG,"onCreate:onItemClick:点击地区："+String.valueOf(area.getText()));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(hrefStr));
+                startActivity(intent);
+                Log.i(TAG,"onCreate:onItemClick:打开链接："+hrefStr);
+            }
+        });
+
     }
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void run() {
-        Log.i(TAG, "run:子线程");
-        //getProvince;
-        List<HashMap<String, String>> provinecList=getProvince();
-        Log.i(TAG, "run:已获取省份数据至provinecList");
-
-        //获取Msg对象，用于返回主线程
-        Message msg1 = handler.obtainMessage(1);//标识what用于massage
-        msg1.obj = provinecList;//编辑msg内容
-        handler.sendMessage(msg1);//将msg发送至消息队列
-        Log.i(TAG,"run:子线程的provinecList数据发送至消息队列Message");
-
-
-        //getWeather;
-        List<HashMap<String, String>> weatherList=getWeather();
-        Log.i(TAG, "run:已获取天气数据至weatherList");
-
-        //获取Msg对象，用于返回主线程
-        Message msg2 = handler.obtainMessage(2);//标识what用于massage
-        msg2.obj = weatherList;//编辑msg内容
-        handler.sendMessage(msg2);//将msg发送至消息队列
-        Log.i(TAG,"run:子线程的weatherList数据发送至消息队列Message");
-
-    }
-
-
-
-
-    public List<HashMap<String, String>> getProvince(){
-        List<HashMap<String, String>> itemList = new ArrayList<HashMap<String, String>>();
-        Document doc = null;
-        try {
-            doc = Jsoup.connect("http://www.weather.com.cn/textFC/beijing.shtml").get();//从网页中获得doc对象
-            Log.i(TAG,"getProvince:打开页面:"+ doc.title());//获得body的title
-            Elements divs = doc.getElementsByTag("div");//在Document dot中获取所有table内的内容
-            Element div = divs.get(26);
-            //Log.i(TAG,"run:ul:"+ ul);
-            Elements as = div.getElementsByTag("a");
-            for(int i = 0;i<as.size();i++){
-                String province = as.get(i).text();
-                //Log.i(TAG, "run:province:"+ province);
-                String href = "http://www.weather.com.cn/"+as.get(i).attr("href");
-                //Log.i(TAG, "run:href:"+ href);
-                HashMap<String,String>  map = new HashMap<String,String>();
-                map.put("province",province);
-                map.put("href",href);
-                itemList.add(map);
-            }
-            Log.i(TAG, "getProvince:已获取省份数据至itemList");
-        }catch (IOException e) {
-            Log.e(TAG,"run:"+e.toString());
-            e.printStackTrace();
-        }
-        return itemList;
-    }
-
-    public List<HashMap<String, String>> getWeather(){
-        List<HashMap<String, String>> itemList = new ArrayList<HashMap<String, String>>();
+        Log.i(TAG, "run:子线程...");
         Document doc = null;
         try {
             doc = Jsoup.connect(hrefStr).get();//从网页中获得doc对象
             Log.i(TAG,"getWeather:打开页面:"+ doc.title());//获得body的title
-            //在Document dot中获取所有table内的内容
-            String date = doc.getElementsByTag("ul").get(8).getElementsByTag("li").get(1).text();
-            Log.i(TAG,"getWeather:明日:"+ date+"天气");
-            Element div_31 = doc.getElementsByTag("div").get(31);
-            Log.i(TAG,"run:div_31:"+ div_31.text());
-            Element conMidtab= doc.getElementsByClass("conMidtab") .get(1);
-            Log.i(TAG,"run:conMidtab:"+ conMidtab.text());
-            Elements tbodys = conMidtab.getElementsByClass("conMidtab3");
-            for(Element tbody:tbodys) {
-                //Log.i(TAG,"run:ul:"+ ul);
-                Log.i(TAG,"run:tbody:"+ tbody.text());
-                Elements trs = tbody.getElementsByTag("tr");
-                for (int i = 0; i < trs.size(); i++) {
-                    Elements tds = trs.get(i).getElementsByTag("td");
-                    Element a = trs.get(i).getElementsByTag("a").get(0);
-                    String href = a.attr("href");
-                    String area, weather1, temp1, weather2, temp2, weather;
-                    if (i == 0) {
-                        area = tds.get(1).text();
-                        weather1 = tds.get(2).text();
-                        temp1 = tds.get(4).text();
-                        weather2 = tds.get(5).text();
-                        temp2 = tds.get(7).text();
-                    } else {
-                        area = tds.get(0).text();
-                        weather1 = tds.get(1).text();
-                        temp1 = tds.get(3).text();
-                        weather2 = tds.get(4).text();
-                        temp2 = tds.get(6).text();
-                    }
-                    if (weather1.equals(weather2)) {
-                        weather = weather1;
-                    } else {
-                        weather = weather1 + "转" + weather2;
-                    }
 
-                    String temp = temp2 + "℃~" + temp1 + "℃";
-                    String weatherStr = weather+"  "+temp;
-
-                    Log.i(TAG, "getWeather:area:" + area);
-                    Log.i(TAG, "getWeather:weatherStr:" + weatherStr);
-                    Log.i(TAG, "getWeather:href:" + href);
-                    //Log.i(TAG, "run:href:"+ href);
-                    HashMap<String, String> map = new HashMap<String, String>();
-                    map.put("area", area);
-                    map.put("weatherStr", weatherStr);
-                    map.put("href", href);
-                    itemList.add(map);
-                }
-            }
-            Log.i(TAG, "getProvince:已获取天气数据至itemList");
-        }catch (IOException e) {
-            Log.e(TAG,"getProvince:"+e.toString());
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
+        if(update) {
+            //getTomorrowDate
+            String date = doc.getElementsByTag("ul").get(8).getElementsByTag("li").get(1).text();
+            Message msg3 = handler.obtainMessage(3);
+            msg3.obj = date;//编辑msg内容
+            handler.sendMessage(msg3);//将msg发送至消息队列
+            Log.i(TAG,"getTomorrowDate::"+ "天气日期"+date+"发送至主线程,what=3");
+            //getProvince;
+            Log.i(TAG, "run:getProvince...");
+            List<HashMap<String, String>> provinecList = getProvince(doc);
+            //获取Msg对象，用于返回主线程
+            Message msg1 = handler.obtainMessage(1);//标识what用于massage
+            msg1.obj = provinecList;//编辑msg内容
+            handler.sendMessage(msg1);//将msg发送至消息队列
+            Log.i(TAG, "getProvince:省份数据发送至主线程，what=1");
+
+
+        }
+
+        //getWeather;
+        Log.i(TAG, "run:getWeather...");
+        List<HashMap<String, String>> weather=getWeather(doc);
+//        for(HashMap<String,String> map:weather){
+//            Log.i(TAG,"weather:"+ Objects.requireNonNull(map.get("area")));
+//            Log.i(TAG,"weather:"+ Objects.requireNonNull(map.get("href")));
+//        }
+
+        //获取Msg对象，用于返回主线程
+        Message msg2 = handler.obtainMessage(2);//标识what用于massage
+        msg2.obj = weather;//编辑msg内容
+        handler.sendMessage(msg2);//将msg发送至消息队列
+        Log.i(TAG,"getWeather:天气数据发送至主线程，what=2");
+
+    }
+
+
+
+
+    public List<HashMap<String, String>> getProvince(Document doc){
+        List<HashMap<String, String>> itemList = new ArrayList<HashMap<String, String>>();
+        Elements divs = doc.getElementsByTag("div");//在Document dot中获取所有table内的内容
+        Element div = divs.get(26);
+        //Log.i(TAG,"run:ul:"+ ul);
+        Elements as = div.getElementsByTag("a");
+        for(int i = 0;i<as.size();i++){
+            String province = as.get(i).text();
+            //Log.i(TAG, "run:province:"+ province);
+            String href = "http://www.weather.com.cn/"+as.get(i).attr("href");
+            //Log.i(TAG, "run:href:"+ href);
+            HashMap<String,String>  map = new HashMap<String,String>();
+            map.put("province",province);
+            map.put("href",href);
+            itemList.add(map);
+        }
+        Log.i(TAG, "getProvince:已获取省份数据");
+        return itemList;
+    }
+
+    public List<HashMap<String, String>> getWeather(Document doc){
+        List<HashMap<String, String>> itemList = new ArrayList<HashMap<String, String>>();
+        //在Document dot中获取所有table内的内容
+        Element div_31 = doc.getElementsByTag("div").get(31);
+        Element conMidtab= doc.getElementsByClass("conMidtab") .get(1);
+        Elements tbodys = conMidtab.getElementsByClass("conMidtab3");
+        for(Element tbody:tbodys) {
+            //Log.i(TAG,"run:ul:"+ ul);
+            //Log.i(TAG,"run:tbody:"+ tbody.text());
+            Elements trs = tbody.getElementsByTag("tr");
+            for (int i = 0; i < trs.size(); i++) {
+                Elements tds = trs.get(i).getElementsByTag("td");
+                Element a = trs.get(i).getElementsByTag("a").get(0);
+                String href = a.attr("href");
+                String area, weather1, temp1, weather2, temp2, weather;
+                if (i == 0) {
+                    area = tds.get(1).text();
+                    weather1 = tds.get(2).text();
+                    temp1 = tds.get(4).text();
+                    weather2 = tds.get(5).text();
+                    temp2 = tds.get(7).text();
+                } else {
+                    area = tds.get(0).text();
+                    weather1 = tds.get(1).text();
+                    temp1 = tds.get(3).text();
+                    weather2 = tds.get(4).text();
+                    temp2 = tds.get(6).text();
+                }
+                if (weather1.equals(weather2)) {
+                    weather = weather1;
+                } else {
+                    weather = weather1 + "转" + weather2;
+                }
+
+                String temp = temp2 + "℃~" + temp1 + "℃";
+                String weatherStr = weather+"  "+temp;
+                //Log.i(TAG, "getWeather:area:" + area);
+//                    Log.i(TAG, "getWeather:weatherStr:" + weatherStr);
+//                    Log.i(TAG, "getWeather:href:" + href);
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("area", area);
+                map.put("weatherStr", weatherStr);
+                map.put("href", href);
+                itemList.add(map);
+            }
+        }
+        Log.i(TAG, "getWeather:已获取天气数据");
         return itemList;
     }
 }

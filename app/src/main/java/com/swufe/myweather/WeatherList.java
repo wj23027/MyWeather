@@ -232,7 +232,7 @@ public class WeatherList extends AppCompatActivity implements Runnable {
             Log.i(TAG,"getTomorrowDate::"+ "天气日期"+date+"发送至主线程,what=3");
             //getProvince;
             Log.i(TAG, "run:getProvince...");
-            List<HashMap<String, String>> provinecList = getProvince(doc);
+            List<HashMap<String, String>> provinecList = WeathterMethod.getProvince(doc);
             //获取Msg对象，用于返回主线程
             Message msg1 = handler.obtainMessage(1);//标识what用于massage
             msg1.obj = provinecList;//编辑msg内容
@@ -244,7 +244,7 @@ public class WeatherList extends AppCompatActivity implements Runnable {
 
         //getWeather;
         Log.i(TAG, "run:getWeather...");
-        List<HashMap<String, String>> weather=getWeather(doc);
+        List<HashMap<String, String>> weather=WeathterMethod.getWeather(doc,1);
 //        for(HashMap<String,String> map:weather){
 //            Log.i(TAG,"weather:"+ Objects.requireNonNull(map.get("area")));
 //            Log.i(TAG,"weather:"+ Objects.requireNonNull(map.get("href")));
@@ -261,73 +261,4 @@ public class WeatherList extends AppCompatActivity implements Runnable {
 
 
 
-    public List<HashMap<String, String>> getProvince(Document doc){
-        List<HashMap<String, String>> itemList = new ArrayList<HashMap<String, String>>();
-        Elements divs = doc.getElementsByTag("div");//在Document dot中获取所有table内的内容
-        Element div = divs.get(26);
-        //Log.i(TAG,"run:ul:"+ ul);
-        Elements as = div.getElementsByTag("a");
-        for(int i = 0;i<as.size();i++){
-            String province = as.get(i).text();
-            //Log.i(TAG, "run:province:"+ province);
-            String href = "http://www.weather.com.cn/"+as.get(i).attr("href");
-            //Log.i(TAG, "run:href:"+ href);
-            HashMap<String,String>  map = new HashMap<String,String>();
-            map.put("province",province);
-            map.put("href",href);
-            itemList.add(map);
-        }
-        Log.i(TAG, "getProvince:已获取省份数据");
-        return itemList;
-    }
-
-    public List<HashMap<String, String>> getWeather(Document doc){
-        List<HashMap<String, String>> itemList = new ArrayList<HashMap<String, String>>();
-        //在Document dot中获取所有table内的内容
-        Element div_31 = doc.getElementsByTag("div").get(31);
-        Element conMidtab= doc.getElementsByClass("conMidtab") .get(1);
-        Elements tbodys = conMidtab.getElementsByClass("conMidtab3");
-        for(Element tbody:tbodys) {
-            //Log.i(TAG,"run:ul:"+ ul);
-            //Log.i(TAG,"run:tbody:"+ tbody.text());
-            Elements trs = tbody.getElementsByTag("tr");
-            for (int i = 0; i < trs.size(); i++) {
-                Elements tds = trs.get(i).getElementsByTag("td");
-                Element a = trs.get(i).getElementsByTag("a").get(0);
-                String href = a.attr("href");
-                String area, weather1, temp1, weather2, temp2, weather;
-                if (i == 0) {
-                    area = tds.get(1).text();
-                    weather1 = tds.get(2).text();
-                    temp1 = tds.get(4).text();
-                    weather2 = tds.get(5).text();
-                    temp2 = tds.get(7).text();
-                } else {
-                    area = tds.get(0).text();
-                    weather1 = tds.get(1).text();
-                    temp1 = tds.get(3).text();
-                    weather2 = tds.get(4).text();
-                    temp2 = tds.get(6).text();
-                }
-                if (weather1.equals(weather2)) {
-                    weather = weather1;
-                } else {
-                    weather = weather1 + "转" + weather2;
-                }
-
-                String temp = temp2 + "℃~" + temp1 + "℃";
-                String weatherStr = weather+"  "+temp;
-                //Log.i(TAG, "getWeather:area:" + area);
-//                    Log.i(TAG, "getWeather:weatherStr:" + weatherStr);
-//                    Log.i(TAG, "getWeather:href:" + href);
-                HashMap<String, String> map = new HashMap<String, String>();
-                map.put("area", area);
-                map.put("weatherStr", weatherStr);
-                map.put("href", href);
-                itemList.add(map);
-            }
-        }
-        Log.i(TAG, "getWeather:已获取天气数据");
-        return itemList;
-    }
 }

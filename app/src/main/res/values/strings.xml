@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">MyWeather</string>
-    <string name="area">area</string>
-    <string name="weather">weather</string>
-    <string name="areahref">areaHref</string>
+    <string name="waiting">…</string>
+    <string name="more">MORE</string>
+    <string name="input_area">input area</string>
+    <string name="arealist">AreaList</string>
+
 </resources>

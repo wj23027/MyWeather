@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,7 +28,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:autofillHints="地区名称"
-            android:hint="请输入地区"
+            android:hint="@string/input_area"
+            android:inputType="text"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:textColor="@color/colorPrimaryDark"
@@ -42,7 +42,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="end|center"
-            android:text="..."
+            android:text="@string/waiting"
             android:textColor="@color/colorPrimary"
             android:textSize="24sp" />
 
@@ -81,7 +81,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/weather1"
@@ -119,7 +120,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/weather2"
@@ -157,7 +159,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/weather3"
@@ -195,7 +198,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/weather4"
@@ -233,7 +237,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/weather5"
@@ -271,7 +276,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/weather6"
@@ -309,7 +315,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/weather7"
@@ -333,7 +340,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:onClick="showList"
-        android:text="更多" />
+        android:text="@string/more" />
 
 
 

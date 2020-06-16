@@ -27,18 +27,14 @@ import com.google.gson.reflect.TypeToken;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 public class WeatherList extends AppCompatActivity implements Runnable {
     ArrayAdapter<String> adapter;
@@ -51,7 +47,7 @@ public class WeatherList extends AppCompatActivity implements Runnable {
 
     String TAG = "WeatherList";
     List<HashMap<String, String>> proList;
-    List<HashMap<String, String>> weatherList = new ArrayList<HashMap<String, String>>();;
+    List<HashMap<String, String>> weatherList = new ArrayList<>();
     private SimpleAdapter listItemAdapter;
     private SimpleAdapter listItemAdapter2;
     String todayStr;
@@ -71,7 +67,7 @@ public class WeatherList extends AppCompatActivity implements Runnable {
         dateTom = findViewById(R.id.todayDate);
 
         listView = findViewById(R.id.tempListView);
-        proList = new ArrayList<HashMap<String, String>>();
+        proList = new ArrayList<>();
         sp = getSharedPreferences("mydata", Activity.MODE_PRIVATE);
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         todayStr = sdf.format(Calendar.getInstance().getTime());
@@ -200,7 +196,7 @@ public class WeatherList extends AppCompatActivity implements Runnable {
                 TextView area= view.findViewById(R.id.area);
                 TextView href= view.findViewById(R.id.areaHref);
                 String hrefStr = String.valueOf(href.getText());
-                Log.i(TAG,"onCreate:onItemClick:点击地区："+String.valueOf(area.getText()));
+                Log.i(TAG,"onCreate:onItemClick:点击地区："+ area.getText());
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(hrefStr));
                 startActivity(intent);
                 Log.i(TAG,"onCreate:onItemClick:打开链接："+hrefStr);
@@ -225,6 +221,7 @@ public class WeatherList extends AppCompatActivity implements Runnable {
 
         if(update) {
             //getTomorrowDate
+            assert doc != null;
             String date = doc.getElementsByTag("ul").get(8).getElementsByTag("li").get(1).text();
             Message msg3 = handler.obtainMessage(3);
             msg3.obj = date;//编辑msg内容
@@ -244,7 +241,8 @@ public class WeatherList extends AppCompatActivity implements Runnable {
 
         //getWeather;
         Log.i(TAG, "run:getWeather...");
-        List<HashMap<String, String>> weather=WeathterMethod.getWeather(doc,1);
+        assert doc != null;
+        List<HashMap<String, String>> weather=WeathterMethod.getWeather(doc);
 //        for(HashMap<String,String> map:weather){
 //            Log.i(TAG,"weather:"+ Objects.requireNonNull(map.get("area")));
 //            Log.i(TAG,"weather:"+ Objects.requireNonNull(map.get("href")));

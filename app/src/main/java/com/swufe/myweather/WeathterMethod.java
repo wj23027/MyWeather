@@ -13,10 +13,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-public  class WeathterMethod {
+class WeathterMethod {
     private static String TAG = "WeathterMethod";
-    public static List<HashMap<String, String>> getProvince(Document doc){
-        List<HashMap<String, String>> itemList = new ArrayList<HashMap<String, String>>();
+    static List<HashMap<String, String>> getProvince(Document doc){
+        List<HashMap<String, String>> itemList = new ArrayList<>();
         Elements divs = doc.getElementsByTag("div");//在Document dot中获取所有table内的内容
         Element div = divs.get(26);
         //Log.i(TAG,"run:ul:"+ ul);
@@ -26,7 +26,7 @@ public  class WeathterMethod {
             //Log.i(TAG, "run:province:"+ province);
             String href = "http://www.weather.com.cn/"+as.get(i).attr("href");
             //Log.i(TAG, "run:href:"+ href);
-            HashMap<String,String>  map = new HashMap<String,String>();
+            HashMap<String,String>  map = new HashMap<>();
             map.put("province",province);
             map.put("href",href);
             itemList.add(map);
@@ -35,11 +35,11 @@ public  class WeathterMethod {
         return itemList;
     }
 
-    public static List<HashMap<String, String>> getWeather(Document doc,int d){
-        List<HashMap<String, String>> itemList = new ArrayList<HashMap<String, String>>();
+    static List<HashMap<String, String>> getWeather(Document doc){
+        List<HashMap<String, String>> itemList = new ArrayList<>();
         //在Document dot中获取所有table内的内容
         Element div_31 = doc.getElementsByTag("div").get(31);
-        Element conMidtab= doc.getElementsByClass("conMidtab") .get(d);
+        Element conMidtab= doc.getElementsByClass("conMidtab") .get(1);
         Elements tbodys = conMidtab.getElementsByClass("conMidtab3");
         for(Element tbody:tbodys) {
             //Log.i(TAG,"run:ul:"+ ul);
@@ -74,7 +74,7 @@ public  class WeathterMethod {
                 //Log.i(TAG, "getWeather:area:" + area);
 //                    Log.i(TAG, "getWeather:weatherStr:" + weatherStr);
 //                    Log.i(TAG, "getWeather:href:" + href);
-                HashMap<String, String> map = new HashMap<String, String>();
+                HashMap<String, String> map = new HashMap<>();
                 map.put("area", area);
                 map.put("weatherStr", weatherStr);
                 map.put("href", href);
@@ -85,7 +85,7 @@ public  class WeathterMethod {
         return itemList;
     }
 
-    public static HashMap<String,HashMap<String, String>> getAreaList(Document doc){
+    static HashMap<String,HashMap<String, String>> getAreaList(Document doc){
         HashMap<String, HashMap<String, String>> itemList = new HashMap<>();
         //在Document dot中获取所有table内的内容
         Element div_31 = doc.getElementsByTag("div").get(31);
@@ -106,21 +106,21 @@ public  class WeathterMethod {
                 HashMap<String,String> map= new HashMap<>();
                 map.put("href", href);
                 itemList.put(area,map);
-                Log.i(TAG,"area："+area);
+                //Log.i(TAG,"area："+area);
             }
         }
         Set set = itemList.keySet();
         for(Object area:set){//编辑某个地区的map
             String a = (String) area;
             HashMap<String,String> map = itemList.get(area);
-            Log.i(TAG,"area："+area);
+            //Log.i(TAG,"area："+area);
             assert map != null;
             String href = map.get("href");
-            Log.i(TAG,"href："+href);
+            //Log.i(TAG,"href："+href);
             Document areadoc = null;
             try {
                 doc = Jsoup.connect(href).get();//从网页中获得doc对象
-                Log.i(TAG, "getAreaList:打开页面:" + doc.title());//获得body的title
+                //Log.i(TAG, "getAreaList:打开页面:" + doc.title());//获得body的title
                 Element ul = doc.getElementsByClass("t clearfix").get(0);
                 Elements lis = ul.getElementsByTag("li");
                 for(int i = 0;i<7;i++){

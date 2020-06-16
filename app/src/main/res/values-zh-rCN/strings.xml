@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyWeather</string>
+    <string name="waiting">…</string>
+    <string name="input_area">请输入地区</string>
+    <string name="more">更多</string>
+    <string name="arealist">地区天气列表</string>
+</resources>

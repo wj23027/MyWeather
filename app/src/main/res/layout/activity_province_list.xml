@@ -12,7 +12,7 @@
         android:id="@+id/province"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="province"
+        android:textColor="@color/textColorPrimary"
         android:textSize="24sp" />
     <TextView
         android:id="@+id/proURL"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
+    android:padding="10dp"
     android:paddingRight="25dp"
     android:paddingLeft="25dp"
     tools:context=".MainActivity"
@@ -21,25 +21,28 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+
         <EditText
             android:id="@+id/editText"
-            android:layout_width="wrap_content"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            android:layout_weight="4"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:hint="请输入地区"
             android:autofillHints="地区名称"
-            android:layout_weight="6"
             tools:ignore="LabelFor"
-            android:paddingStart="15dp"
-            android:paddingEnd="5dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="5dp" />
+             />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/area"
+            android:gravity="end"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="20sp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:width="50dp"
-            android:onClick="showList"
-            android:text="sreach" />
+            android:layout_weight="2" />
     </LinearLayout>
 
     <LinearLayout
@@ -50,7 +53,6 @@
         <LinearLayout
             android:id="@+id/L1"
             android:layout_width="match_parent"
-            android:paddingTop="10dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal">
@@ -60,7 +62,6 @@
                 android:layout_width="73dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="16日（明天）"
                 android:textSize="18sp" />
 
             <TextView
@@ -69,7 +70,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="TextView"
                 android:textSize="16sp" />
 
             <TextView
@@ -78,7 +78,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="TextView"
                 android:textSize="16sp" />
 
             <TextView
@@ -86,7 +85,6 @@
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="24/30℃"
                 android:textSize="21sp" />
         </LinearLayout>
 
@@ -95,50 +93,230 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal"></LinearLayout>
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/date2"
+                android:layout_width="73dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/wind2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/weather2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/temp2"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="21sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/L3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal"></LinearLayout>
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/date3"
+                android:layout_width="73dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/wind3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/weather3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/temp3"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="21sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/L4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal"></LinearLayout>
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/date4"
+                android:layout_width="73dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/wind4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/weather4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/temp4"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="21sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/L5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal"></LinearLayout>
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/date5"
+                android:layout_width="73dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/wind5"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/weather5"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/temp5"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="21sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/L6"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal"></LinearLayout>
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/date6"
+                android:layout_width="73dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/wind6"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/weather6"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/temp6"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="21sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/L7"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal"></LinearLayout>
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/date7"
+                android:layout_width="73dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/wind7"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/weather7"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/temp7"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="21sp" />
+        </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/more"
+    <Button
+        android:id="@+id/button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="更多"
-        android:textSize="30sp" />
+        android:layout_height="match_parent"
+        android:onClick="showList"
+        android:text="更多" />
 
 
 

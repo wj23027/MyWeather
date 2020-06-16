@@ -130,11 +130,11 @@ public  class WeathterMethod {
                     String temp = li.getElementsByTag("span").get(0).text()+"/"+li.getElementsByTag("i").get(0).text();
                     String wind = li.getElementsByTag("i").get(1).text();
                    // String wind2 = li.getElementsByTag("em").get(0).getElementsByTag("span").get(1).text();
-
-                    map.put("date"+i,date);
-                    map.put("weather"+i,weather);
-                    map.put("temp"+i,temp);
-                    map.put("wind"+i,wind);
+                    int x = 1+i;
+                    map.put("date"+x,date);
+                    map.put("weather"+x,weather);
+                    map.put("temp"+x,temp);
+                    map.put("wind"+x,wind);
                     //map.put("wind2"+i,wind2);
 
 //

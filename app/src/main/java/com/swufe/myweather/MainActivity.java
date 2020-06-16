@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements Runnable {
     Handler handler;
     String todayStr;
     String areaHref;
+    TextView areatxt;
     List<HashMap<String, String>> proList;
     HashMap<String, HashMap<String, String>> areaList;
     SharedPreferences sp;
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements Runnable {
         Log.i("TAG", todayStr);
 
         handler = new Handler() {
+            @SuppressLint("ShowToast")
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
                 if (msg.what == 1) {//判断数据是哪个线程返回的
@@ -82,32 +85,18 @@ public class MainActivity extends AppCompatActivity implements Runnable {
                     editor.putString("date", todayStr);
                     editor.putString("data", json);
                     editor.apply();
+
                     Log.i(TAG, "onCreate:handler1:sp保存省份及更新日期");
                 }
                 if(msg.what == 2){
                     areaList = (HashMap<String, HashMap<String, String>>) msg.obj;
+                    Toast.makeText(MainActivity.this,"天气数据已更新",Toast.LENGTH_SHORT
+                    ).show();
                     Log.i(TAG, "onCreate:handler1:主线程获得省份对应地区数据");
 
 
                 }
 
-
-//                if(msg.what == 2){
-//                    weatherList = (List<HashMap<String, String>>)msg.obj;
-//                    Log.i(TAG,"onCreate:handler2:主线程获得天气数据");
-////                    for(HashMap<String,String> map:weatherList){
-////                        Log.i(TAG, "获得："+Objects.requireNonNull(map.get("area")));
-////                        //Log.i(TAG, Objects.requireNonNull(map.get("href")));
-////                    }
-//                    listItemAdapter2= new SimpleAdapter(WeatherList.this, weatherList,//数据源
-//                            R.layout.activity_weather_item,//布局实现
-//                            new String[] {"area","weatherStr","href"},
-//                            new int[]{R.id.area,R.id.weather,R.id.areaHref}
-//                    );
-//                    listView.setAdapter(listItemAdapter2);
-//                    Log.i(TAG,"onCreate:展示天气列表");
-//
-//                }
 
             }
 
@@ -120,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements Runnable {
                 TextView province = view.findViewById(R.id.province);
                 TextView href = view.findViewById(R.id.proURL);
                 String provinceStr = String.valueOf(province.getText());
+
                 hrefStr = String.valueOf(href.getText());
                 Log.i(TAG, "onCreate:onItemSelected:点击省份：" + provinceStr);
                 //Log.i(TAG,"onCreate:listView:onItemSelected:链接："+hrefStr);
@@ -171,31 +161,99 @@ public class MainActivity extends AppCompatActivity implements Runnable {
 
             @Override
             public void afterTextChanged(Editable s) {
-                areaHref = null;
-                String area = editText.getText().toString();
-                Log.i(TAG,"showList：点击查询："+area);
+                if(areaList == null){
+                    Toast.makeText(MainActivity.this,"请稍等",Toast.LENGTH_SHORT).show();
+                }else {
+                    areaHref = null;
+                    String area = editText.getText().toString();
+                    Log.i(TAG,"showList：点击查询："+area);
 
-                for(String areaitem :areaList.keySet()){
-                    if(area.contains(areaitem)){
-                        areaHref = areaitem;
-                        Log.i(TAG,"查询地区："+areaitem+"href:"+areaHref);
-                        break;
+                    for(String areaitem :areaList.keySet()){
+                        if(area.contains(areaitem)){
+                            areaHref = areaitem;
+                            Log.i(TAG,"查询地区："+areaitem+"href:"+areaHref);
+                            break;
+                        }
+                    }
+                    if(areaHref == null){
+                        Toast.makeText(MainActivity.this,"没有查询到改地区",Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(MainActivity.this,"已显示"+areaHref+"天气",Toast.LENGTH_SHORT).show();
+                        areatxt = findViewById(R.id.area);
+                        areatxt.setText(areaHref+"天气");
+                        TextView date1 = findViewById(R.id.date1);
+                        TextView wind1 = findViewById(R.id.wind1);
+                        TextView weather1 = findViewById(R.id.weather1);
+                        TextView temp1 = findViewById(R.id.temp1);
+                        //Log.i(TAG,"date:"+areaList.get(areaHref).get("date1"));
+                        date1.setText(areaList.get(areaHref).get("date1"));
+                        wind1.setText(areaList.get(areaHref).get("wind1"));
+                        weather1.setText(areaList.get(areaHref).get("weather1"));
+                        temp1.setText(areaList.get(areaHref).get("temp1"));
+
+                        TextView date2 = findViewById(R.id.date2);
+                        TextView wind2 = findViewById(R.id.wind2);
+                        TextView weather2 = findViewById(R.id.weather2);
+                        TextView temp2 = findViewById(R.id.temp2);
+                        //Log.i(TAG,"date:"+areaList.get(areaHref).get("date1"));
+                        date2.setText(areaList.get(areaHref).get("date2"));
+                        wind2.setText(areaList.get(areaHref).get("wind2"));
+                        weather2.setText(areaList.get(areaHref).get("weather2"));
+                        temp2.setText(areaList.get(areaHref).get("temp2"));
+
+                        TextView date3 = findViewById(R.id.date3);
+                        TextView wind3 = findViewById(R.id.wind3);
+                        TextView weather3 = findViewById(R.id.weather3);
+                        TextView temp3 = findViewById(R.id.temp3);
+                        //Log.i(TAG,"date:"+areaList.get(areaHref).get("date1"));
+                        date3.setText(areaList.get(areaHref).get("date3"));
+                        wind3.setText(areaList.get(areaHref).get("wind3"));
+                        weather3.setText(areaList.get(areaHref).get("weather3"));
+                        temp3.setText(areaList.get(areaHref).get("temp3"));
+
+                        TextView date4 = findViewById(R.id.date4);
+                        TextView wind4 = findViewById(R.id.wind4);
+                        TextView weather4 = findViewById(R.id.weather4);
+                        TextView temp4 = findViewById(R.id.temp4);
+                        //Log.i(TAG,"date:"+areaList.get(areaHref).get("date1"));
+                        date4.setText(areaList.get(areaHref).get("date4"));
+                        wind4.setText(areaList.get(areaHref).get("wind4"));
+                        weather4.setText(areaList.get(areaHref).get("weather4"));
+                        temp4.setText(areaList.get(areaHref).get("temp4"));
+
+                        TextView date5 = findViewById(R.id.date5);
+                        TextView wind5 = findViewById(R.id.wind5);
+                        TextView weather5 = findViewById(R.id.weather5);
+                        TextView temp5 = findViewById(R.id.temp5);
+                        //Log.i(TAG,"date:"+areaList.get(areaHref).get("date1"));
+                        date5.setText(areaList.get(areaHref).get("date5"));
+                        wind5.setText(areaList.get(areaHref).get("wind5"));
+                        weather5.setText(areaList.get(areaHref).get("weather5"));
+                        temp5.setText(areaList.get(areaHref).get("temp5"));
+
+                        TextView date6 = findViewById(R.id.date6);
+                        TextView wind6 = findViewById(R.id.wind6);
+                        TextView weather6 = findViewById(R.id.weather6);
+                        TextView temp6 = findViewById(R.id.temp6);
+                        //Log.i(TAG,"date:"+areaList.get(areaHref).get("date1"));
+                        date6.setText(areaList.get(areaHref).get("date6"));
+                        wind6.setText(areaList.get(areaHref).get("wind6"));
+                        weather6.setText(areaList.get(areaHref).get("weather6"));
+                        temp6.setText(areaList.get(areaHref).get("temp6"));
+
+                        TextView date7 = findViewById(R.id.date7);
+                        TextView wind7 = findViewById(R.id.wind7);
+                        TextView weather7 = findViewById(R.id.weather7);
+                        TextView temp7 = findViewById(R.id.temp7);
+                        //Log.i(TAG,"date:"+areaList.get(areaHref).get("date1"));
+                        date7.setText(areaList.get(areaHref).get("date7"));
+                        wind7.setText(areaList.get(areaHref).get("wind7"));
+                        weather7.setText(areaList.get(areaHref).get("weather7"));
+                        temp7.setText(areaList.get(areaHref).get("temp7"));
+
                     }
                 }
-                if(areaHref == null){
-                    Toast.makeText(MainActivity.this,"没有查询到改地区",Toast.LENGTH_SHORT).show();
-                }else {
-                    TextView date1 = findViewById(R.id.date1);
-                    TextView wind1 = findViewById(R.id.wind1);
-                    TextView weather1 = findViewById(R.id.weather1);
-                    TextView temp1 = findViewById(R.id.temp1);
-                    //Log.i(TAG,"date:"+areaList.get(areaHref).get("date1"));
-                    date1.setText(areaList.get(areaHref).get("date1"));
-                    wind1.setText(areaList.get(areaHref).get("wind1"));
-                    weather1.setText(areaList.get(areaHref).get("weather1"));
-                    temp1.setText(areaList.get(areaHref).get("temp1"));
 
-                }
 
             }
         });
@@ -215,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements Runnable {
 
             //getProvince;
             Log.i(TAG, "run:getProvince...");
+            assert doc != null;
             List<HashMap<String, String>> provinecList = WeathterMethod.getProvince(doc);
             //获取Msg对象，用于返回主线程
             Message msg1 = handler.obtainMessage(1);//标识what用于massage
@@ -241,16 +300,16 @@ public class MainActivity extends AppCompatActivity implements Runnable {
             }
         }
 
+        @SuppressLint("ShowToast")
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         public void showList(View btn){
-
-
-
-//            Document areaDoc = null;
-
-
-
-
+            if(areaHref == null){
+                Toast.makeText(MainActivity.this,"请输入地区名称",Toast.LENGTH_SHORT).show();
+            }else{
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(areaList.get(areaHref).get("href")));
+                startActivity(intent);
+                Log.i(TAG,"onCreate:onItemClick:打开链接："+areaList.get(areaHref).get("href"));
+            }
 
 
         }

@@ -52,7 +52,9 @@ public class MainActivity extends AppCompatActivity implements Runnable {
     Handler handler;
     String todayStr;
     String areaHref;
+    String provinceStr;
     TextView areatxt;
+    boolean update;
     List<HashMap<String, String>> proList;
     HashMap<String, HashMap<String, String>> areaList;
     SharedPreferences sp;
@@ -90,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements Runnable {
                 }
                 if(msg.what == 2){
                     areaList = (HashMap<String, HashMap<String, String>>) msg.obj;
+                    TextView provincetxt = findViewById(R.id.provincetxt);
+                    provincetxt.setText(provinceStr);
                     Toast.makeText(MainActivity.this,"天气数据已更新",Toast.LENGTH_SHORT
                     ).show();
                     Log.i(TAG, "onCreate:handler1:主线程获得省份对应地区数据");
@@ -108,7 +112,8 @@ public class MainActivity extends AppCompatActivity implements Runnable {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 TextView province = view.findViewById(R.id.province);
                 TextView href = view.findViewById(R.id.proURL);
-                String provinceStr = String.valueOf(province.getText());
+
+                provinceStr = String.valueOf(province.getText());
 
                 hrefStr = String.valueOf(href.getText());
                 Log.i(TAG, "onCreate:onItemSelected:点击省份：" + provinceStr);
@@ -124,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements Runnable {
         //获取sp保存的list数据至proList
 
         String dateStr = sp.getString("date", "");
-        boolean update = !todayStr.equals(dateStr);
+        update = !todayStr.equals(dateStr);
         //Log.i(TAG, "onCreatedata:"+data);
         Log.i(TAG, "onCreate:今日日期：" + todayStr + "，上次更新日期：" + dateStr + "，是否更新：" + update);
 
@@ -271,15 +276,17 @@ public class MainActivity extends AppCompatActivity implements Runnable {
                 e.printStackTrace();
             }
 
-            //getProvince;
-            Log.i(TAG, "run:getProvince...");
-            assert doc != null;
-            List<HashMap<String, String>> provinecList = WeathterMethod.getProvince(doc);
-            //获取Msg对象，用于返回主线程
-            Message msg1 = handler.obtainMessage(1);//标识what用于massage
-            msg1.obj = provinecList;//编辑msg内容
-            handler.sendMessage(msg1);//将msg发送至消息队列
-            Log.i(TAG, "getProvince:省份数据发送至主线程，what=1");
+            if(update){
+                //getProvince;
+                Log.i(TAG, "run:getProvince...");
+                assert doc != null;
+                List<HashMap<String, String>> provinecList = WeathterMethod.getProvince(doc);
+                //获取Msg对象，用于返回主线程
+                Message msg1 = handler.obtainMessage(1);//标识what用于massage
+                msg1.obj = provinecList;//编辑msg内容
+                handler.sendMessage(msg1);//将msg发送至消息队列
+                Log.i(TAG, "getProvince:省份数据发送至主线程，what=1");
+            }
 
             //getAreaList
             Log.i(TAG,"run:getAreaList");

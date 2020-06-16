@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:padding="5dp"
     android:paddingRight="25dp"
     android:paddingLeft="25dp"
     tools:context=".MainActivity"
@@ -13,59 +13,52 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="52dp"
         android:orientation="horizontal">
 
         <Spinner
             android:id="@+id/spinner2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:layout_weight="1" />
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:autofillHints="地区名称"
+            android:hint="请输入地区"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            tools:ignore="LabelFor" />
 
         <TextView
             android:id="@+id/provincetxt"
             android:layout_width="match_parent"
-            android:gravity="end"
-            android:textSize="24sp"
-            android:textColor="@color/colorPrimary"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="..." />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-
-        <EditText
-            android:id="@+id/editText"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
-            android:textSize="20sp"
-            android:layout_weight="3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryDark"
-            android:hint="请输入地区"
-            android:autofillHints="地区名称"
-            tools:ignore="LabelFor"
-             />
+            android:gravity="end|center"
+            android:text="..."
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/area"
-            android:gravity="end"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="20sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2" />
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="240dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -77,14 +70,14 @@
 
             <TextView
                 android:id="@+id/date1"
-                android:layout_width="73dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/wind1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -92,7 +85,7 @@
 
             <TextView
                 android:id="@+id/weather1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -100,7 +93,7 @@
 
             <TextView
                 android:id="@+id/temp1"
-                android:layout_width="80dp"
+                android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="21sp" />
@@ -112,9 +105,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/date2"
-                android:layout_width="73dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="18sp" />
@@ -137,7 +131,7 @@
 
             <TextView
                 android:id="@+id/temp2"
-                android:layout_width="80dp"
+                android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="21sp" />
@@ -149,9 +143,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/date3"
-                android:layout_width="73dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="18sp" />
@@ -174,7 +169,7 @@
 
             <TextView
                 android:id="@+id/temp3"
-                android:layout_width="80dp"
+                android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="21sp" />
@@ -186,9 +181,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/date4"
-                android:layout_width="73dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="18sp" />
@@ -211,7 +207,7 @@
 
             <TextView
                 android:id="@+id/temp4"
-                android:layout_width="80dp"
+                android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="21sp" />
@@ -223,9 +219,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/date5"
-                android:layout_width="73dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="18sp" />
@@ -248,7 +245,7 @@
 
             <TextView
                 android:id="@+id/temp5"
-                android:layout_width="80dp"
+                android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="21sp" />
@@ -260,9 +257,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/date6"
-                android:layout_width="73dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="18sp" />
@@ -285,7 +283,7 @@
 
             <TextView
                 android:id="@+id/temp6"
-                android:layout_width="80dp"
+                android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="21sp" />
@@ -297,9 +295,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/date7"
-                android:layout_width="73dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="18sp" />
@@ -322,7 +321,7 @@
 
             <TextView
                 android:id="@+id/temp7"
-                android:layout_width="80dp"
+                android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="21sp" />

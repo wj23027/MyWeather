@@ -19,7 +19,8 @@
 
         </activity>
         <activity android:name=".provinceList" />
-        <activity android:name=".WeatherList">
+        <activity android:name=".WeatherList"
+            android:label="@string/arealist">
 
         </activity>
         <activity android:name=".MainActivity">

@@ -103,6 +103,7 @@ public class WeatherList extends AppCompatActivity implements Runnable {
 
 
 
+
                     //保存list数据及更新日期
                     Gson gson = new Gson();
                     String json = gson.toJson(proList);

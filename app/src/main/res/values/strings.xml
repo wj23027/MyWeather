@@ -3,6 +3,6 @@
     <string name="waiting">…</string>
     <string name="more">MORE</string>
     <string name="input_area">input area</string>
-    <string name="arealist">AreaList</string>
+    <string name="arealist">weatherList</string>
 
 </resources>

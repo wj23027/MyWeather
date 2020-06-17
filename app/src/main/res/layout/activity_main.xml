@@ -103,8 +103,16 @@
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:text=""
                 android:textSize="21sp" />
         </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_height="0.7dp"
+            android:background="@color/colorPrimary"
+            />
 
         <LinearLayout
             android:id="@+id/L2"
@@ -144,6 +152,14 @@
                 android:textSize="21sp" />
         </LinearLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_height="0.7dp"
+            android:background="@color/colorPrimary"
+            />
+
         <LinearLayout
             android:id="@+id/L3"
             android:layout_width="match_parent"
@@ -181,6 +197,14 @@
                 android:gravity="center"
                 android:textSize="21sp" />
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_height="0.7dp"
+            android:background="@color/colorPrimary"
+            />
 
         <LinearLayout
             android:id="@+id/L4"
@@ -220,6 +244,14 @@
                 android:textSize="21sp" />
         </LinearLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_height="0.7dp"
+            android:background="@color/colorPrimary"
+            />
+
         <LinearLayout
             android:id="@+id/L5"
             android:layout_width="match_parent"
@@ -258,6 +290,14 @@
                 android:textSize="21sp" />
         </LinearLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_height="0.7dp"
+            android:background="@color/colorPrimary"
+            />
+
         <LinearLayout
             android:id="@+id/L6"
             android:layout_width="match_parent"
@@ -295,6 +335,14 @@
                 android:gravity="center"
                 android:textSize="21sp" />
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_height="0.7dp"
+            android:background="@color/colorPrimary"
+            />
 
         <LinearLayout
             android:id="@+id/L7"
@@ -337,8 +385,11 @@
 
     <Button
         android:id="@+id/button"
+        android:textSize="20sp"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:textColor="#FFFFFF"
         android:onClick="showList"
         android:text="@string/more" />
 

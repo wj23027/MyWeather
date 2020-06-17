@@ -113,28 +113,29 @@ class WeathterMethod {
         for(Object area:set){//编辑某个地区的map
             String a = (String) area;
             HashMap<String,String> map = itemList.get(area);
-            //Log.i(TAG,"area："+area);
+            Log.i(TAG,"area："+area);
             assert map != null;
             String href = map.get("href");
-            //Log.i(TAG,"href："+href);
+            Log.i(TAG,"href："+href);
             Document areadoc = null;
             try {
                 doc = Jsoup.connect(href).get();//从网页中获得doc对象
-                //Log.i(TAG, "getAreaList:打开页面:" + doc.title());//获得body的title
+                Log.i(TAG, "getAreaList:打开页面:" + doc.title());//获得body的title
+                if(!(doc.title().equals(""))){
                 Element ul = doc.getElementsByClass("t clearfix").get(0);
                 Elements lis = ul.getElementsByTag("li");
-                for(int i = 0;i<7;i++){
+                for(int i = 0;i<7;i++) {
                     Element li = lis.get(i);
                     String date = li.getElementsByTag("h1").get(0).text();
                     String weather = li.getElementsByTag("p").get(0).text();
-                    String temp = li.getElementsByTag("span").get(0).text()+"/"+li.getElementsByTag("i").get(0).text();
+                    String temp = li.getElementsByTag("span").get(0).text() + "/" + li.getElementsByTag("i").get(0).text();
                     String wind = li.getElementsByTag("i").get(1).text();
-                   // String wind2 = li.getElementsByTag("em").get(0).getElementsByTag("span").get(1).text();
-                    int x = 1+i;
-                    map.put("date"+x,date);
-                    map.put("weather"+x,weather);
-                    map.put("temp"+x,temp);
-                    map.put("wind"+x,wind);
+                    // String wind2 = li.getElementsByTag("em").get(0).getElementsByTag("span").get(1).text();
+                    int x = 1 + i;
+                    map.put("date" + x, date);
+                    map.put("weather" + x, weather);
+                    map.put("temp" + x, temp);
+                    map.put("wind" + x, wind);
                     //map.put("wind2"+i,wind2);
 
 //
@@ -142,7 +143,8 @@ class WeathterMethod {
 //                    Log.i(TAG,"weather:"+weather);
 //                    Log.i(TAG,"temp:"+temp);
 //                    Log.i(TAG,"wind:"+wind);
-                   //Log.i(TAG,"wind2:"+wind2);
+                    //Log.i(TAG,"wind2:"+wind2);
+                }
 
 
                 }
